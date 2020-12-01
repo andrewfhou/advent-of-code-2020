@@ -15,12 +15,12 @@ print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def part_one():
     s = set()
-    for i in range(len(inputs)):
-        test = 2020 - inputs[i]
+    for x in inputs:
+        test = 2020 - x
         if test in s:
-            return test * inputs[i]
+            return test * x
         else:
-            s.add(inputs[i])
+            s.add(x)
 
 def part_two():
     for i in range(len(inputs)):
