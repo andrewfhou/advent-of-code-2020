@@ -1,4 +1,5 @@
 import time
+import functools
 
 CURR_MS = lambda: time.time() * 1000
 
@@ -9,22 +10,18 @@ print('+-------------------------+')
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
-    inputs = file.read().strip().split('\n\n')
+    inputs = file.read().strip()
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def part_one():
-    yes = 0
-    for group in inputs:
-        group = group.replace('\n', '')
-        yes += len(''.join(set(group)))
-    return yes
+    return sum(len(set(group.replace('\n',''))) for group in inputs.split('\n\n'))
 
 def part_two():
-    yes = 0
-    for group in inputs:
-        group = group.replace('\n', ' ')
-        yes += len(set.intersection(*map(set, group.split())))
-    return yes
+    return sum(len(functools.reduce(
+                     lambda a, b: a.intersection(b),
+                     map(set, group.split('\n')),
+                     set(group.replace('\n', ''))))
+               for group in inputs.split('\n\n'))
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
