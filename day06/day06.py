@@ -24,7 +24,6 @@ def part_two():
     for group in inputs:
         group = group.replace('\n', ' ')
         yes += len(set.intersection(*map(set, group.split())))
-
     return yes
 
 START_ONE = CURR_MS()
