@@ -9,14 +9,23 @@ print('+-------------------------+')
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
-    inputs = file.read().strip().split()
+    inputs = file.read().strip().split('\n\n')
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def part_one():
-    return 0
+    yes = 0
+    for group in inputs:
+        group = group.replace('\n', '')
+        yes += len(''.join(set(group)))
+    return yes
 
 def part_two():
-    return 0
+    yes = 0
+    for group in inputs:
+        group = group.replace('\n', ' ')
+        yes += len(set.intersection(*map(set, group.split())))
+
+    return yes
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
