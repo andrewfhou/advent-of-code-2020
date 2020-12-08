@@ -9,6 +9,7 @@ print('+-------------------------+')
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
 with open("input.txt") as file:
+# with open("example.txt") as file:
     inputs = file.read().strip().split()
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
