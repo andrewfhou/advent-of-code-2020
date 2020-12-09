@@ -17,7 +17,6 @@ print('%.6fms\n' % (CURR_MS() - START_READ))
 def part_one():
     for i in range(25, len(inputs)):
         prev = inputs[(i - 25):i]
-
         valid = False
         for x in range(25):
             for y in range(25):
