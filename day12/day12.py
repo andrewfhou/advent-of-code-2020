@@ -3,7 +3,7 @@ import time
 CURR_MS = lambda: time.time() * 1000
 
 print('+-------------------------+')
-print('| ADVENT OF CODE - DAY XX |')
+print('| ADVENT OF CODE - DAY 07 |')
 print('+-------------------------+')
 
 START_READ = CURR_MS()
