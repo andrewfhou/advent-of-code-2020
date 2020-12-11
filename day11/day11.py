@@ -29,15 +29,15 @@ def step_simple(grid):
     for row in range(r):
         for col in range(c):
             adj = 0
-            adj += row and col and                 grid[row - 1][col - 1] =='#'
-            adj += row and                         grid[row - 1][col] == '#'
-            adj += row and col + 1 < c and         grid[row - 1][col + 1] == '#'
+            adj += row and col                 and grid[row - 1][col - 1] == '#'
+            adj += row                         and grid[row - 1][col    ] == '#'
+            adj += row and col + 1 < c         and grid[row - 1][col + 1] == '#'
 
-            adj += col and                         grid[row][col - 1] == '#'
-            adj += col + 1 < c and                 grid[row][col + 1] == '#'
+            adj += col                         and grid[row    ][col - 1] == '#'
+            adj += col + 1 < c                 and grid[row    ][col + 1] == '#'
 
-            adj += row + 1 < r and col and         grid[row + 1][col - 1] == '#'
-            adj += row + 1 < r and                 grid[row + 1][col] == '#'
+            adj += row + 1 < r and col         and grid[row + 1][col - 1] == '#'
+            adj += row + 1 < r                 and grid[row + 1][col    ] == '#'
             adj += row + 1 < r and col + 1 < c and grid[row + 1][col + 1] == '#'
 
             if grid[row][col] == 'L' and adj == 0:
