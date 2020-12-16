@@ -16,18 +16,21 @@ with open("input.txt") as file:
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def part_one():
-    rules = []
+    rules = {}
+    valid_rng = set()
     for rule in inputs[0].split('\n'):
         range1 = [int(x) for x in rule.split(': ')[1].split(' ')[0].split('-')]
         range1 = set(range(range1[0], range1[1] + 1))
         range2 = [int(x) for x in rule.split(': ')[1].split(' ')[2].split('-')]
         range2 = set(range(range2[0], range2[1] + 1))
-        rules.append(range1.union(range2))
+        rules[rule.split(':')[0]] = (range1 | range2)
+        valid_rng |= rules[rule.split(':')[0]]
+
     err_rate = 0
-    rules = set(x for rule in rules for x in rule)
     for ticket in inputs[2].split('\n')[1:-1]:
+        valid_tix = True
         for val in ticket.split(','):
-            if not int(val) in rules:
+            if not int(val) in valid_rng:
                 err_rate += int(val)
     return err_rate
 
