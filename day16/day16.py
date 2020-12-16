@@ -65,8 +65,6 @@ def part_two():
     for x in pos:
         options[len(pos[x])] = x
     for x in range(len(pos)):
-        print(options[x + 1])
-        print(pos[options[x + 1]])
         field = list(pos[options[x + 1]])[0]
         for rule in pos:
             if len(pos[rule]) > 1:
