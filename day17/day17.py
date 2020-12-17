@@ -24,8 +24,37 @@ def part_one():
             if inputs[row][col]:
                 active.append((row, col, 0))
     for _ in range(6):
-        active = cycle(active)
+        active = cycle(active, False)
     return len(active)
+
+def part_two():
+    active = []
+    for row in range(len(inputs)):
+        for col in range(len(inputs[row])):
+            if inputs[row][col]:
+                active.append((row, col, 0, 0))
+    for _ in range(6):
+        active = cycle(active, True)
+    return len(active)
+
+def cycle(prev, hyper):
+    adj = defaultdict(int)
+    for pt in prev:
+        if hyper:
+            for neighbour in find_hyper_neighbours(pt):
+                adj[neighbour] += 1
+        else:
+            for neighbour in find_neighbours(pt):
+                adj[neighbour] += 1
+    new_active = []
+    for pt in prev:
+        count = adj.pop(pt, 0)
+        if count == 2 or count == 3:
+            new_active.append(pt)
+    for pt, count in adj.items():
+        if count == 3:
+            new_active.append(pt)
+    return new_active
 
 def find_neighbours(pt):
     x, y, z = pt
@@ -36,31 +65,6 @@ def find_neighbours(pt):
                     continue
                 yield (x + x_shift, y + y_shift, z + z_shift)
 
-def cycle(prev):
-    active = defaultdict(int)
-    for pt in prev:
-        for neighbour in find_neighbours(pt):
-            active[neighbour] += 1
-    new_active = []
-    for pt in prev:
-        count = active.pop(pt, 0)
-        if count == 2 or count == 3:
-            new_active.append(pt)
-    for pt, count in active.items():
-        if count == 3:
-            new_active.append(pt)
-    return new_active
-
-def part_two():
-    active = []
-    for row in range(len(inputs)):
-        for col in range(len(inputs[row])):
-            if inputs[row][col]:
-                active.append((row, col, 0, 0))
-    for _ in range(6):
-        active = hyper_cycle(active)
-    return len(active)
-
 def find_hyper_neighbours(pt):
     x, y, z, w = pt
     for x_shift in (-1, 0, 1):
@@ -70,21 +74,6 @@ def find_hyper_neighbours(pt):
                     if x_shift == y_shift == z_shift == w_shift == 0:
                         continue
                     yield (x + x_shift, y + y_shift, z + z_shift, w + w_shift)
-
-def hyper_cycle(prev):
-    active = defaultdict(int)
-    for pt in prev:
-        for neighbour in find_hyper_neighbours(pt):
-            active[neighbour] += 1
-    new_active = []
-    for pt in prev:
-        count = active.pop(pt, 0)
-        if count == 2 or count == 3:
-            new_active.append(pt)
-    for pt, count in active.items():
-        if count == 3:
-            new_active.append(pt)
-    return new_active
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
