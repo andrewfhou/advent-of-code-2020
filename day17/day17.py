@@ -58,7 +58,7 @@ def part_two():
             if inputs[row][col]:
                 active.append((row, col, 0, 0))
     for _ in range(6):
-        active = hypercycle(active)
+        active = hyper_cycle(active)
     return len(active)
 
 def find_hyper_neighbours(pt):
@@ -71,7 +71,7 @@ def find_hyper_neighbours(pt):
                         continue
                     yield (x + x_shift, y + y_shift, z + z_shift, w + w_shift)
 
-def hypercycle(prev):
+def hyper_cycle(prev):
     active = defaultdict(int)
     for pt in prev:
         for neighbour in find_hyper_neighbours(pt):
