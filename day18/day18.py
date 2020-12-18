@@ -14,41 +14,15 @@ with open("input.txt") as file:
     inputs = file.read().replace(' ', '').split('\n')[:-1]
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
+class P1(int):
+    def __add__(self, x):
+        return P1(int.__add__(self, x))
+    def __sub__(self, x):
+        return P1(int.__mul__(self, x))
+
 def part_one():
-    total = 0
-    for expr in inputs:
-        total += calc(expr, 0, len(expr))
-    return total
-
-def calc(expr, start, end):
-    curr = start
-    soln = 0
-    add = True
-
-    while curr < end:
-        if expr[curr] == '+':
-            add = True
-        elif expr[curr] == '*':
-            add = False
-        elif expr[curr] == '(':
-            parens = 1
-            paren_close = curr + 1
-            while parens > 0:
-                if expr[paren_close] == ')':
-                    parens -= 1
-                elif expr[paren_close] == '(':
-                    parens += 1
-                paren_close += 1
-            paren_close -= 1
-
-            if add: soln += calc(expr, curr + 1, paren_close)
-            else: soln *= calc(expr, curr + 1, paren_close)
-            curr = paren_close
-        else:
-            if add: soln += int(expr[curr])
-            else: soln *= int(expr[curr])
-        curr += 1
-    return soln
+    exprs = [x.replace('*', '-') for x in inputs]
+    return sum([eval(re.sub(r'(\d+)', r'P1(\1)', x)) for x in exprs])
 
 class P2(int):
     def __add__(self, x):
