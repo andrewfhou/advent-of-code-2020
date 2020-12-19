@@ -31,11 +31,11 @@ def part_one():
     return matches
 
 def eval_rule(rules, idx, c=0):
-    if c > 15:
+    if c > 15: # don't need to recurse too deep for pt2
         return ''
-    if '\"a\"' in rules[idx]:
+    elif '\"a\"' in rules[idx]:
         return 'a'
-    if '\"b\"' in rules[idx]:
+    elif '\"b\"' in rules[idx]:
         return 'b'
     else:
         if '|' in rules[idx]:
