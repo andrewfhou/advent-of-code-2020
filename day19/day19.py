@@ -15,14 +15,13 @@ with open("input.txt") as file:
     inputs = [x.split('\n') for x in inputs]
     rulelist = [x.split(' ') for x in inputs[0]]
     rulelist = [[int(x) if x.isdigit() else x for x in rule] for rule in rulelist]
-print('%.6fms\n' % (CURR_MS() - START_READ))
-
-def part_one():
-    msgs = inputs[1]
     rules = {}
     for rule in rulelist:
         rules[int(rule[0][:-1])] = rule[1:]
+    msgs = inputs[1]
+print('%.6fms\n' % (CURR_MS() - START_READ))
 
+def part_one():
     regex_str = '^' + eval_rule(rules, 0) + '$'
     regex = re.compile(regex_str)
     matches = 0
@@ -32,7 +31,7 @@ def part_one():
     return matches
 
 def eval_rule(rules, idx, c=0):
-    if c > 100:
+    if c > 15:
         return ''
     if '\"a\"' in rules[idx]:
         return 'a'
@@ -54,10 +53,6 @@ def eval_rule(rules, idx, c=0):
             return rulestr
 
 def part_two():
-    msgs = inputs[1]
-    rules = {}
-    for rule in rulelist:
-        rules[int(rule[0][:-1])] = rule[1:]
     rules[8] = [42, '|', 42, 8]
     rules[11] = [42, 31, '|', 42, 11, 31]
 
