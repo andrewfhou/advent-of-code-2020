@@ -1,4 +1,5 @@
 import time
+import math
 import itertools
 
 CURR_MS = lambda: time.time() * 1000
@@ -9,8 +10,8 @@ print('+-------------------------+')
 
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
-with open("input.txt") as file:
-# with open("example.txt") as file:
+# with open("input.txt") as file:
+with open("example.txt") as file:
     inputs = file.read().strip().split('\n\n')
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
@@ -46,7 +47,31 @@ def find_edges(t):
     ]
 
 def part_two():
+    tiles = {}
+    for tile in inputs:
+        lines = tile.strip().split('\n')
+        tiles[lines[0]] = transforms(lines[1:])
+
+    side = int(math.sqrt(len(tiles)))
+    img = [[0] * side for _ in range(side)]
+    coords = list(reversed(list((r, c) for c in range(side) for r in range(side))))
+    print(coords)
     return 0
+
+def transpose(tile):
+    return list(''.join(row) for row in zip(*tile))
+
+def reverse(tile):
+    return [''.join(reversed(row)) for row in tile]
+
+def make_rotations(tile):
+    ret = [tile]
+    for _ in range(3):
+        ret.append(reverse(transpose(ret[-1])))
+    return ret
+
+def transforms(tile):
+    return make_rotations(tile) + make_rotations(transpose(tile))
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
