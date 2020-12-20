@@ -77,7 +77,6 @@ def transforms(tile):
 
 def solve_img(tiles, coords, img):
     if len(coords) == 0:
-        # print(int(img[0][0][0]) * int(img[-1][0][0]) * int(img[0][-1][0]) * int(img[-1][-1][0]))
         return True
     (r, c) = coords.pop()
     for tile_num in list(tiles.keys()):
