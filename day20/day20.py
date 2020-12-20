@@ -10,41 +10,22 @@ print('+-------------------------+')
 
 START_READ = CURR_MS()
 print('\nREADING FILE... ',end='')
-# with open("input.txt") as file:
-with open("example.txt") as file:
+with open("input.txt") as file:
+# with open("example.txt") as file:
     inputs = file.read().strip().split('\n\n')
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
 def part_one():
-    edges = []
-    tiles = []
-    for x in range(len(inputs)):
-        e = find_edges(inputs[x].split('\n'))
-        edges.append(e)
-        tiles.append(e)
+    tiles = {}
+    for tile in inputs:
+        lines = tile.strip().split('\n')
+        tiles[lines[0].split(' ')[1][:-1]] = transforms(lines[1:])
 
-    soln = 1
-    for tile in tiles:
-        uniques = 0
-        for edge in tile[1:]:
-            if list(itertools.chain(*tiles)).count(edge) == 1:
-                uniques += 1
-        if uniques == 4: # 4 uniques means 2 unique edges (fwd/rev)
-            soln *= int(tile[0].split(' ')[1][:-1])
-    return soln
-
-def find_edges(t):
-    return [
-            t[0],                                  # tile #
-            t[1],                                  # N; W -> E
-            t[1][::-1],                            # N; E -> W
-            t[-1],                                 # S; W -> E
-            t[-1][::-1],                           # S; E -> W
-            ''.join([x[0] for x in t[1:]]),        # W; N -> S
-            ''.join([x[0] for x in t[1:]])[::-1],  # W; S -> N
-            ''.join([x[-1] for x in t[1:]]),       # E; N -> S
-            ''.join([x[-1] for x  in t[1:]])[::-1] # E; S -> N
-    ]
+    side_len = int(math.sqrt(len(tiles)))
+    img = [[0] * side_len for _ in range(side_len)]
+    coords = list(reversed(list((r, c) for c in range(side_len) for r in range(side_len))))
+    solve_img(tiles, coords, img)
+    return int(img[0][0][0]) * int(img[-1][0][0]) * int(img[0][-1][0]) * int(img[-1][-1][0])
 
 def part_two():
     tiles = {}
