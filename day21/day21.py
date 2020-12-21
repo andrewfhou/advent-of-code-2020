@@ -16,69 +16,46 @@ with open("input.txt") as file:
     inputs = file.read().strip().replace(')', '').replace(',', '').split('\n')
 print('%.6fms\n' % (CURR_MS() - START_READ))
 
+foods = []
+for line in inputs:
+    ings = set(line.split(' (contains ')[0].split(' '))
+    allgs = set(line.split(' (contains ')[1].split(' '))
+    foods.append((ings, allgs))
+
+all_ings = set()
+all_allgs = set()
+for ings, allgs in foods:
+    all_ings |= ings
+    all_allgs |= allgs
+
+possible = set()
+for allg in all_allgs:
+    ps = set(all_ings)
+    for ings, allgs in foods:
+        if allg in allgs:
+            ps &= ings
+    possible |= ps
+
 def part_one():
-    foods = parse()
-    all_ing = set()
-    all_all = set()
-    for ings, allgs in foods:
-        all_ing |= ings
-        all_all |= allgs
-
-    possible = set()
-    for allergen in all_all:
-        ps = set(all_ing)
-        for ings, allgs in foods:
-            if allergen in allgs:
-                ps &= ings
-        possible |= ps
-
-    safe = all_ing - possible
-    soln = 0
-    for ings, allgs in foods:
-        soln += len(ings & safe)
-    return soln
-
-def parse():
-    foods = []
-    for line in inputs:
-        ingredients = set(line.split(' (contains ')[0].split(' '))
-        allergens = set(line.split(' (contains ')[1].split(' '))
-        foods.append((ingredients, allergens))
-    return foods
+    return sum(len(ings & (all_ings - possible)) for ings, _ in foods)
 
 def part_two():
-    foods = parse()
-    all_ing = set()
-    all_all = set()
+    allgs_to_ings = {}
+    for allg in all_allgs:
+        allgs_to_ings[allg] = set(possible)
     for ings, allgs in foods:
-        all_ing |= ings
-        all_all |= allgs
+        for allg in allgs:
+            allgs_to_ings[allg] &= ings
 
-    possible = set()
-    for allergen in all_all:
-        ps = set(all_ing)
-        for ings, allgs in foods:
-            if allergen in allgs:
-                ps &= ings
-        possible |= ps
-
-    trans = {}
-    for allergen in all_all:
-        trans[allergen] = set(possible)
-    for ings, alls in foods:
-        for allergen in alls:
-            trans[allergen] &= ings
-
-    while not all(len(x) <= 1 for x in trans.values()):
+    while not all(len(x) <= 1 for x in allgs_to_ings.values()):
         found = set()
-        for x in trans.values():
+        for x in allgs_to_ings.values():
             if len(x) == 1:
                 found |= x
-        for allgn, x in trans.items():
-            if len(x) > 1:
-                trans[allgn] -= found
-    words = sorted(trans.items())
-    return ','.join(list(x)[0] for _, x in words)
+        for allg, ings in allgs_to_ings.items():
+            if len(ings) > 1:
+                allgs_to_ings[allg] -= found
+    return ','.join(list(x)[0] for _, x in sorted(allgs_to_ings.items()))
 
 START_ONE = CURR_MS()
 print('PART ONE: ' + str(part_one()))
