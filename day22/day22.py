@@ -27,22 +27,16 @@ def part_one():
         elif card2 > card1:
             deck2.append(card2)
             deck2.append(card1)
+
     windeck = deck1 if len(deck1) != 0 else deck2
-    soln = 0
-    for idx, card in enumerate(windeck[::-1]):
-        soln += (idx + 1) * card
-    return soln
+    return sum((idx + 1) * card for idx, card in enumerate(windeck[::-1]))
 
 def part_two():
     deck1 = [int(x) for x in inputs[0].split('\n')[1:]]
     deck2 = [int(x) for x in inputs[1].split('\n')[1:]]
-
     play(deck1, deck2)
     windeck = deck1 if len(deck1) != 0 else deck2
-    soln = 0
-    for idx, card in enumerate(windeck[::-1]):
-        soln += (idx + 1) * card
-    return soln
+    return sum((idx + 1) * card for idx, card in enumerate(windeck[::-1]))
 
 def play(deck1, deck2):
     states1 = []
