@@ -28,7 +28,7 @@ def find_loop(pub_key):
 
 def find_key(subj, loop):
     find_loop_key = 1
-    for x in range(loop):
+    for _ in range(loop):
         find_loop_key = find_loop_key * subj
         find_loop_key = find_loop_key % 20201227
     return find_loop_key
