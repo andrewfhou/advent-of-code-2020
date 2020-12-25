@@ -1,4 +1,6 @@
 # advent of code 2020
-Motivation low this year, but we'll give it a shot
+Motivation low this year, but we'll give it a shot.
 
-Solutions primarily in Python, though I hope to come back and try them in Haskell when my schedule frees up
+Woah, first year getting 50 stars! Didn't think I'd make it, but here I am
+
+Solutions primarily in Python
